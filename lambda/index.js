@@ -15,12 +15,15 @@ exports.handler = (event, context, callback) => {
     }
     let args = event.sampleInput.split("\n")
     args.splice(0, 0, event.regex)
-    const child = child_process.execFile("regexer", args,
+    const child = child_process.execFile("regexer/regexer", args,
                                          (error, stdout, stderr) => {
         if (error) {
             callback(error, stderr);
         } else {
-            callback(null, stdout.split("\n"));
+            let out = stdout.split("\n");
+            // Remove trailing empty string from array.
+            out.pop();
+            callback(null, out);
         }
     });
 };
